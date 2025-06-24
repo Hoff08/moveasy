@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moveasy – Seu Passeio na Barra da Lagoa</title> <!-- Título Atualizado -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,600&display=swap" rel="stylesheet">
+    <!-- SUBSTITUA PELO SEU FAVICON -->
+    <link rel="icon" href="./moveasy-favicon.png">
+
+    <style>
+        /* Global Resets & Base Styles */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            color: #E0E0E0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container { width: 90%; max-width: 1140px; margin-left: auto; margin-right: auto; padding: 0 15px; }
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: #E0E0E0; transition: color 0.3s ease, opacity 0.3s ease; }
+        ul { list-style: none; }
+
+        :root {
+            --rosa-principal: #FF3B8A; /* Mantendo rosa, mas pode ajustar para a cor da Moveasy se for diferente */
+            --rosa-hover: #E62A76;
+            --preto-cards: #141414;
+            --borda-elementos: #2E2E2E;
+        }
+
+        a:hover { color: var(--rosa-principal); opacity: 0.9; }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Inter', sans-serif;
+            color: #FAFAFA;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        h1 { font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif; }
+        h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; font-family: 'Bricolage Grotesque', sans-serif; }
+        h3 { font-size: clamp(1.5rem, 3vw, 2.3rem); font-weight: 500; font-family: 'Bricolage Grotesque', sans-serif; }
+        h4 { font-size: clamp(1.2rem, 2.5vw, 1.7rem); font-weight: 500; }
+        h5 { font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 500; }
+
+        p { margin-bottom: 1rem; color: #BDBDBD; }
+
+        section.visible { opacity: 1; transform: translateY(0); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        section { opacity: 0; transform: translateY(20px); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 28px; border-radius: 33px; font-weight: 600; text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--borda-elementos);
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); cursor: pointer;
+        }
+        .btn .icon { margin-right: 8px; font-size: 1.1em; }
+        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 20px rgba(255, 59, 138, 0.25); }
+        .btn-primary { background-color: var(--rosa-principal); color: #FFFFFF; border-color: var(--rosa-principal); }
+        .btn-primary:hover { background-color: var(--rosa-hover); }
+        .btn-secondary { background-color: rgba(255, 255, 255, 0.05); color: #FAFAFA; }
+        .btn-secondary:hover { background-color: rgba(255, 255, 255, 0.1); box-shadow: 0 5px 12px rgba(250, 250, 250, 0.08); }
+        .btn-nav { background-color: transparent; color: #FAFAFA; font-size: 0.9rem; padding: 10px 20px; }
+        .btn-nav:hover { color: var(--rosa-principal); }
+        .btn-large { padding: 16px 32px; font-size: 1.1rem; }
+
+        /* Header & Navigation */
+        .site-header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background-color: rgba(10,10,10,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--borda-elementos);
+            opacity: 0; transform: translateY(-100%); animation: slideInHeader 0.7s 0.3s ease-out forwards;
+        }
+        @keyframes slideInHeader { to { opacity: 1; transform: translateY(0); } }
+        .main-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            min-height: 65px; /* AUMENTADO AINDA MAIS PARA O LOGO */
+        }
+        .logo-link { display: inline-block; line-height: 0; }
+        .logo-image {
+            height: 120px;  /* <<< LOGO SIGNIFICATIVAMENTE MAIOR */
+            width: auto;
+            max-width: 250px; /* <<< AUMENTADO MAX-WIDTH */
+            display: block;
+        }
+        .nav-links {
+            display: flex; gap: 5px; background-color: rgba(30,30,30,0.6);
+            border: 1px solid var(--borda-elementos); padding: 7px 10px; border-radius: 33px;
+        }
+        .nav-links a { font-size: 0.9rem; font-weight: 500; padding: 8px 15px; border-radius: 25px; color: #E0E0E0; }
+        .nav-links a:hover, .nav-links a.active {
+            color: #FAFAFA; text-decoration: underline;
+            text-decoration-color: var(--rosa-principal); text-underline-offset: 4px;
+        }
+        .main-nav .btn-nav { padding: 10px 22px; }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding-top: 120px; padding-bottom: 0; position: relative; overflow: hidden;
+            opacity: 1 !important; transform: none !important;
+        }
+        .hero-content {
+            position: relative; z-index: 1; opacity: 0; transform: translateY(30px);
+            animation: fadeInContent 1s 1s ease-out forwards;
+        }
+        @keyframes fadeInContent { to { opacity: 1; transform: translateY(0); } }
+        .hero-content h1 { margin-bottom: 1.5rem; }
+        .hero-content p {
+            max-width: 680px; margin-left: auto; margin-right: auto; margin-bottom: 2.5rem;
+            font-size: 1.25rem; color: #CFCFCF;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--rosa-principal) 25%, #EFA0C1 50%, #FFCADF 75%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .hero-mockup {
+            position: absolute; left: 50%;
+            width: clamp(450px, 60vw, 750px); max-width: 90%; height: auto;
+            z-index: 0; pointer-events: none; transform-origin: bottom center;
+            opacity: 0; transform: translateX(20%) translateY(110%) scale(0.75) rotate(15deg);
+            animation: heroMockupAnimation 3s 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+        }
+        .hero-mockup img {
+            width: 100%; height: 100%; object-fit: contain;
+            mask-image: linear-gradient(to top, black 65%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to top, black 65%, transparent 100%);
+        }
+        @keyframes heroMockupAnimation {
+            0% { transform: translateX(20%) translateY(110%) scale(0.75) rotate(15deg); opacity: 0; }
+            30% { opacity: 0.9; }
+            70%, 100% { transform: translateX(-50%) translateY(0%) scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--preto-cards); padding: 35px; border-radius: 40px;
+            border: 1px solid var(--borda-elementos); margin-bottom: 30px; text-align: center;
+            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px); box-shadow: 0 12px 25px rgba(255, 59, 138, 0.15);
+            border-color: var(--rosa-principal);
+        }
+
+        /* Como Reservar Section */
+        .how-to-book-section { padding: 80px 0; }
+        .booking-app-icon {
+            width: 80px; height: 80px; margin: 0 auto 30px auto; border-radius: 20px;
+            filter: drop-shadow(0 0 15px rgba(255, 59, 138, 0.4)); position: relative;
+            background-color: var(--preto-cards); display: flex; align-items: center; justify-content: center; font-size: 2.5rem;
+        }
+        .how-to-book-section .card .gradient-text {
+            background: linear-gradient(90deg, #FAFAFA 0%, var(--rosa-principal) 50%, #E0E0E0 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+
+        /* Passeio Barra da Lagoa Section */
+        .barra-tour-section { padding: 80px 0; }
+        .barra-tour-section > h2 {text-align:center; margin-bottom: 40px;}
+        .tour-main-card {
+            display: grid; grid-template-columns: 1.3fr 0.7fr; align-items: center;
+            gap: 30px; padding: 40px;
+        }
+        .tour-mockup { max-width: 100%; height: 400px; overflow: hidden; border-radius: 20px; }
+        .tour-mockup img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .tour-text h3 { color: #FAFAFA; font-size: clamp(1.7rem, 3vw, 2.5rem); margin-bottom: 15px; }
+        .tour-text ul { margin-top: 20px; list-style-type: '🌊 '; padding-left: 20px;}
+        .tour-text ul li { margin-bottom: 10px; font-size: 1rem; color: #CFCFCF; }
+        .points-of-interest-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; margin-top: 40px;
+        }
+        .points-of-interest-grid .card { padding: 25px; }
+        .poi-item h4 { color: #E0E0E0; margin-top: 15px; font-size: 1.1rem; }
+        .poi-item .icon { font-size: 2.2rem; color: var(--rosa-principal); margin-bottom: 10px; }
+
+        /* Nossos Diferenciais Section */
+        .our-perks-section { padding: 60px 0; text-align: center; }
+        .our-perks-section h2 { color: #FAFAFA; margin-bottom: 40px;}
+        .perks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .perk-item {
+            background-color: var(--preto-cards); padding: 25px; border-radius: 20px;
+            border: 1px solid var(--borda-elementos);
+        }
+        .perk-item .icon { font-size: 2rem; color: var(--rosa-principal); margin-bottom: 10px; }
+        .perk-item h4 { font-size: 1.1rem; color: #E0E0E0; margin-bottom: 8px;}
+        .perk-item p { font-size: 0.9rem; color: #BDBDBD;}
+
+        /* Testimonials Section */
+        .testimonials-section { padding: 80px 0; }
+        .testimonials-section > h2 { margin-bottom: 50px; font-size: clamp(2.2rem, 4.2vw, 3.5rem); text-align: center;}
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .testimonial-card h5 { font-size: 1.15rem; line-height: 1.5; color: #F0F0F0; font-weight: 500;}
+        .testimonial-card .stars { color: var(--rosa-principal); font-size: 1.1rem; margin-bottom: 10px;}
+        .author { display: flex; align-items: center; gap: 15px; margin-top: 25px; text-align: left; }
+        .author img { width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 0 10px rgba(250,250,250,0.1); }
+        .author strong { display: block; color: #FAFAFA; }
+        .author span { font-size: 0.9rem; color: #A3A3A3;}
+        
+        /* Download App CTA Section */
+        .download-app-cta-section { padding: 80px 0; }
+        .download-app-cta-card {
+             background: linear-gradient(145deg, #181818, #0C0C0C);
+             display: flex; flex-direction: column; align-items: center; text-align: center;
+             padding: 50px;
+        }
+        .download-app-cta-text h3 {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem); margin-bottom: 20px; color: #FAFAFA;
+            font-family: 'Bricolage Grotesque', sans-serif;
+        }
+        .download-app-cta-text p {color: #CFCFCF; margin-bottom: 30px; max-width: 600px; margin-left:auto; margin-right:auto;}
+        .app-store-buttons { display: flex; gap: 15px; margin-top: 20px; justify-content: center; flex-wrap: wrap; }
+        .app-store-buttons .btn { min-width: 160px; font-size: 0.9rem; padding: 10px 20px; }
+        .app-store-buttons .btn .icon { font-size: 1.3em; margin-right: 10px;}
+
+        /* Footer */
+        .site-footer {
+            padding: 70px 0 35px; border-top: 1px solid var(--borda-elementos); text-align: center;
+        }
+        .footer-logo { font-size: 2.2rem; font-family: 'Bricolage Grotesque', sans-serif; color: #FAFAFA; margin-bottom: 20px; }
+        .footer-links { margin-bottom: 20px;}
+        .footer-links a { margin: 0 12px; font-size: 0.9rem; color: #BDBDBD; }
+        .footer-links a:hover { color: var(--rosa-principal); }
+        .copyright { font-size: 0.85rem; color: #828282; margin-bottom: 5px;}
+        .designer-credit { font-size: 0.8rem; color: #606060; opacity: 0.7;}
+
+        /* ESTILOS PARA O BOTÃO FLUTUANTE */
+        .floating-action-button {
+            position: fixed; bottom: 30px; right: 30px; z-index: 999;
+            opacity: 0; transform: translateY(20px) scale(0.9);
+            animation: popUpButton 0.5s 2s ease-out forwards;
+        }
+        .floating-action-button .btn {
+            padding: 14px 22px; border-radius: 50px; font-size: 0.95rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2), 0 3px 8px rgba(255, 59, 138, 0.3);
+        }
+        .floating-action-button .btn .icon { font-size: 1.2em; margin-right: 8px; }
+        @keyframes popUpButton { to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .main-nav { min-height: 55px; } /* Ajuste altura nav tablet */
+            .logo-image { height: 50px; max-width: 200px; } /* Logo tablet */
+            .main-nav .btn-nav { font-size: 0.85rem; padding: 8px 18px; }
+            .nav-links a { font-size: 0.85rem; padding: 8px 12px; }
+            .tour-main-card { grid-template-columns: 1fr; padding: 40px; }
+            .tour-mockup { height: 300px; }
+            .download-app-cta-card { padding: 40px; }
+            .floating-action-button { bottom: 20px; right: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .main-nav .btn-nav { display: none; }
+            .main-nav { justify-content: center; min-height: 55px; /* Mantém a altura aumentada do logo */ }
+            .site-header { padding: 5px 0; }
+            .logo-image { height: 45px; max-width: 180px; } /* LOGO MAIOR PARA MOBILE TAMBÉM */
+            h1 { font-size: clamp(2rem, 7vw, 3rem); } h2 { font-size: clamp(1.8rem, 6vw, 2.8rem); }
+            .hero-section { min-height: 85vh; padding-top: 80px; }
+            .hero-mockup {
+                 width: clamp(320px, 85vw, 450px);
+                 opacity: 0; transform: translateX(15%) translateY(100%) scale(0.7) rotate(12deg);
+                 animation: heroMockupAnimationMobile 2.5s 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+            }
+            @keyframes heroMockupAnimationMobile {
+                0% { transform: translateX(15%) translateY(100%) scale(0.7) rotate(12deg); opacity: 0; }
+                30% { opacity: 0.8; }
+                70%, 100% { transform: translateX(-50%) translateY(5%) scale(0.9) rotate(0deg); opacity: 1; }
+            }
+            .hero-content p { font-size: 1.05rem; }
+            .btn-large { font-size: 1rem; padding: 14px 28px; }
+            .card { padding: 25px; border-radius: 30px; }
+            .booking-app-icon { width: 70px; height: 70px; font-size: 2rem; filter: drop-shadow(0 0 10px rgba(255, 59, 138, 0.3));}
+            .tour-main-card { padding: 30px; }
+            .tour-mockup { max-width: 100%; margin: 0 auto 20px auto; display:block; height: 250px; }
+            .tour-text {text-align: center;} .tour-text ul {text-align: left; display: inline-block;}
+            .testimonials-grid, .points-of-interest-grid, .perks-grid { grid-template-columns: 1fr; }
+            .floating-action-button .btn { padding: 12px; width: 50px; height: 50px; }
+            .floating-action-button .btn .icon { margin-right: 0; font-size: 1.3em; }
+            .floating-action-button .btn-text { display: none; }
+            .app-store-buttons .btn { min-width: 140px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="main-nav container">
+            <a href="#hero" class="logo-link">
+                <!-- SUBSTITUA "moveasy-logo.png" PELO CAMINHO CORRETO DA SUA IMAGEM DE LOGO -->
+                <img src="logo.png" alt="Moveasy Logo" class="logo-image">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#how-to-book">Como Reservar</a></li>
+                <li><a href="#barra-tour">Passeio Barra</a></li>
+                <li><a href="#our-perks">Diferenciais</a></li>
+                <li><a href="#testimonials">Depoimentos</a></li>
+            </ul>
+            <a href="#download-app-cta" class="btn btn-nav">Baixar App</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-section">
+            <div class="hero-content container">
+                <h1><span class="gradient-text">Aventura na Barra</span> Viva a Magia da Lagoa com a Moveasy!</h1> <!-- Nome da empresa adicionado -->
+                <p>Descubra as belezas naturais da Barra da Lagoa, suas piscinas naturais e paisagens deslumbrantes. Uma experiência única com a Moveasy.</p>
+                <a href="#barra-tour" class="btn btn-primary btn-large">Conheça o Roteiro</a>
+            </div>
+            <div class="hero-mockup">
+                <img src="TLYhBn7W4w4w.png" alt="App Moveasy no Celular">
+            </div>
+        </section>
+
+        <section id="how-to-book" class="how-to-book-section container">
+            <div class="card">
+                <div class="booking-app-icon">📲</div>
+                <h2><span class="gradient-text">Reserve Pelo App</span> Simples e Rápido com a Moveasy!</h2>
+                <p>Baixe nosso aplicativo Moveasy, escolha o passeio da Barra da Lagoa, veja datas disponíveis e reserve sua aventura em minutos. Tudo na palma da sua mão!</p>
+                <a href="#download-app-cta" class="btn btn-secondary">Baixar Moveasy App</a>
+            </div>
+        </section>
+
+        <section id="barra-tour" class="barra-tour-section container">
+             <h2>Descubra o Encanto da Barra da Lagoa</h2>
+            <div class="tour-main-card card">
+                <div class="tour-mockup">
+                     <img src="download (5).jpg" alt="Passeio na Barra da Lagoa">
+                </div>
+                <div class="tour-text">
+                    <h3>Roteiro Completo pela Barra com a Moveasy</h3>
+                    <p>Um dia explorando as maravilhas da Barra da Lagoa, incluindo paradas estratégicas nos melhores pontos para fotos, banho e contemplação, organizado pela Moveasy.</p>
+                    <ul>
+                        <li>Travessia do Canal da Barra</li>
+                        <li>Visita às Piscinas Naturais</li>
+                        <li>Trilha leve com vista panorâmica (opcional)</li>
+                        <li>Tempo livre para relaxar e aproveitar</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="points-of-interest-grid">
+                <div class="card poi-item">
+                    <div class="icon">🏞️</div>
+                    <h4>Piscinas Naturais</h4>
+                    <p>Mergulhe em águas calmas e cristalinas, perfeitas para todas as idades.</p>
+                </div>
+                <div class="card poi-item">
+                    <div class="icon">📸</div>
+                    <h4>Mirantes Espetaculares</h4>
+                    <p>Capture fotos incríveis de pontos com vistas privilegiadas da região.</p>
+                </div>
+                 <div class="card poi-item">
+                    <div class="icon">🐢</div>
+                    <h4>Vida Marinha Local</h4>
+                    <p>Com sorte, aviste tartarugas e outros encantos da fauna marinha local.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="our-perks" class="our-perks-section container">
+            <h2>Navegue com a Moveasy: Confiança e Conforto</h2>
+            <div class="perks-grid">
+                <div class="perk-item card">
+                    <div class="icon">🛡️</div>
+                    <h4>Segurança em Primeiro Lugar</h4>
+                    <p>Embarcações modernas, equipadas e marinheiros experientes para sua tranquilidade.</p>
+                </div>
+                <div class="perk-item card">
+                    <div class="icon">⭐</div>
+                    <h4>Guias Locais Apaixonados</h4>
+                    <p>Nossos guias conhecem cada canto e encanto da Barra da Lagoa para enriquecer sua experiência.</p>
+                </div>
+                <div class="perk-item card">
+                    <div class="icon">👨‍👩‍👧‍👦</div>
+                    <h4>Ideal para Toda a Família</h4>
+                    <p>Passeios seguros e divertidos, perfeitos para criar memórias com quem você ama.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials-section container">
+            <h2>Quem Navegou com a Moveasy, Recomenda!</h2>
+            <div class="testimonials-grid">
+                <div class="card testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <h5>"O passeio da Barra da Lagoa com a Moveasy foi o ponto alto das nossas férias! As piscinas naturais são incríveis."</h5>
+                    <p>Equipe super simpática e organizada. O app da Moveasy facilitou muito a reserva!</p>
+                    <div class="author">
+                        <img src="https://via.placeholder.com/50/FAFAFA/0A0A0A?text=MF" alt="Mariana Fernandes">
+                        <div>
+                            <strong>Mariana Fernandes</strong>
+                            <span>Turista de São Paulo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <h5>"Dia maravilhoso explorando a Barra da Lagoa. As crianças amaram ver as tartarugas! O barco era muito confortável. Moveasy é top!"</h5>
+                    <p>Recomendo a todos que visitam Floripa.</p>
+                    <div class="author">
+                        <img src="https://via.placeholder.com/50/FAFAFA/0A0A0A?text=PS" alt="Paulo Silva e Família">
+                        <div>
+                            <strong>Paulo Silva e Família</strong>
+                            <span>Família em Férias</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="download-app-cta" class="download-app-cta-section container">
+            <div class="card download-app-cta-card">
+                <div class="download-app-cta-text">
+                    <h3>Baixe o App Moveasy e Agende Seu Passeio!</h3>
+                    <p>Tenha acesso a todos os nossos roteiros, informações, promoções exclusivas e reserve sua aventura na Barra da Lagoa de forma fácil e rápida com o app Moveasy.</p>
+                    <div class="app-store-buttons">
+                        <a href="#" class="btn btn-secondary">
+                            <span class="icon"></span> Apple Store
+                        </a>
+                        <a href="#" class="btn btn-secondary">
+                            <span class="icon">▶</span> Google Play
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-logo">Moveasy</div>
+            <div class="footer-links">
+                <a href="#">Política de Cancelamento</a>
+                <a href="#">Termos de Serviço</a>
+                <a href="#">Contato</a>
+            </div>
+            <p class="copyright">© 2024 Moveasy. Todos os direitos reservados.</p>
+            <p class="designer-credit">Descubra a Barra da Lagoa como nunca antes!</p>
+        </div>
+    </footer>
+
+    <a href="#download-app-cta" class="floating-action-button">
+        <button class="btn btn-primary">
+            <span class="icon">📱</span>
+            <span class="btn-text">Baixar App</span>
+        </button>
+    </a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section:not(#hero)');
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, observerOptions);
+            sections.forEach(sec => observer.observe(sec));
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const pageSections = document.querySelectorAll('main section');
+            function changeNavOnScroll() {
+                let currentSectionId = '';
+                pageSections.forEach(section => {
+                    if (pageYOffset >= section.offsetTop - 150) currentSectionId = section.id;
+                });
+                let foundActive = false;
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.hash === `#${currentSectionId}`) { link.classList.add('active'); foundActive = true; }
+                });
+                if (!foundActive && pageYOffset < (pageSections[0]?.offsetTop - 150 || 0) ) {
+                     const defaultActiveLink = document.querySelector('.nav-links a[href="#how-to-book"]');
+                     if (defaultActiveLink) defaultActiveLink.classList.add('active');
+                 }
+            }
+            window.addEventListener('scroll', changeNavOnScroll);
+            changeNavOnScroll();
+        });
+    </script>
+
+</body>
+</html>
